@@ -5,6 +5,7 @@
  *  终端自我介绍、桌面图标、弹窗、作品集、关于页、联系方式……
  *
  *  图片占位：public/avatar.svg（换成你自己的图片时保持文件名，或改 sticker.src）
+ *  注意：src 请用相对路径（如 avatar.svg），不要以 / 开头，以兼容 GitHub Pages 子路径部署
  * ==========================================================================*/
 
 export const siteConfig = {
@@ -44,7 +45,7 @@ export const siteConfig = {
 
   /* ---------- 桌面贴纸（可拖拽的那个小头像） ----------
    * 把 public/avatar.svg 换成你的头像 / IP 形象即可 */
-  sticker: { src: '/avatar.svg', alt: '我的头像贴纸' },
+  sticker: { src: 'avatar.svg', alt: '我的头像贴纸' },
 
   /* ---------- 首屏语义化导航（对 SEO 和无障碍友好，可选） ---------- */
   navLinks: [
@@ -69,11 +70,11 @@ export const siteConfig = {
     { type: 'link', label: '博客.md', href: 'https://example.com/blog', art: 'md', style: { top: '24px', right: '24px' } },
     { type: 'link', label: '读书笔记', href: 'https://example.com/notes', art: 'html', style: { top: '114px', right: '24px' } },
     { type: 'link', label: '随笔', href: 'https://example.com/essays', art: 'md', style: { top: '204px', right: '24px' } },
-    { type: 'link', label: '相册', href: 'https://example.com/gallery', art: 'image', image: { src: '/avatar.svg', alt: '' }, style: { top: '294px', right: '24px' } },
+    { type: 'link', label: '相册', href: 'https://example.com/gallery', art: 'image', image: { src: 'avatar.svg', alt: '' }, style: { top: '294px', right: '24px' } },
     { type: 'window', label: '我的项目', win: 'win-projects', art: 'folder', style: { top: '24px', right: '114px' } },
     { type: 'link', label: 'GitHub', href: 'https://github.com/yourname', art: 'git', style: { top: '114px', right: '114px' } },
     { type: 'window', label: '联系我', win: 'win-contact', art: 'folder', style: { top: '204px', right: '114px' } },
-    { type: 'window', label: 'AI 助手', win: 'win-assistant', art: 'image', image: { src: '/avatar.svg', alt: 'AI' }, style: { top: '294px', right: '114px' } },
+    { type: 'window', label: 'AI 助手', win: 'win-assistant', art: 'image', image: { src: 'avatar.svg', alt: 'AI' }, style: { top: '294px', right: '114px' } },
     { type: 'window', label: '使用指南', win: 'win-hello', art: 'folder', style: { top: '24px', right: '204px' } },
     { type: 'window', label: '关于本站', win: 'win-meta', art: 'folder', style: { top: '114px', right: '204px' } },
   ],
