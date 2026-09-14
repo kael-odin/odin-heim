@@ -1,0 +1,190 @@
+/* ============================================
+   MACBOOK FRAME (shared: hero + exit)
+   ============================================ */
+.macbook-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform, opacity;
+}
+.macbook-wrapper.zoom-transition {
+  transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+.macbook-screen-bezel {
+  position: relative;
+  background: #2a2a30;
+  border-radius: 14px 14px 0 0;
+  padding: 14px;
+  padding-top: 0;
+  width: 708px;
+  cursor: pointer;
+}
+.macbook-notch {
+  width: 130px; height: 14px;
+  background: #2a2a30;
+  border-radius: 0 0 10px 10px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.macbook-screen {
+  width: 680px; height: 440px;
+  background: var(--blue);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.macbook-screen::after,
+.exit-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.03) 2px,
+    rgba(255,255,255,0.03) 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.macbook-hinge {
+  width: 720px; height: 3px;
+  background: linear-gradient(180deg, #8a8a8e 0%, #6e6e72 100%);
+  border-radius: 0 0 2px 2px;
+}
+.macbook-base {
+  width: 760px; height: 14px;
+  background: linear-gradient(180deg, #c8c8cc 0%, #a8a8ac 30%, #b8b8bc 70%, #9a9a9e 100%);
+  border-radius: 0 0 10px 10px;
+}
+.macbook-shadow {
+  width: 700px; height: 40px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, transparent 70%);
+  margin-top: 4px;
+}
+
+/* ============================================
+   TERMINAL (shared)
+   ============================================ */
+.terminal {
+  padding: 16px 20px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.terminal.scale-through {
+  transform: scale(1.15);
+  opacity: 0;
+  filter: blur(2px);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  margin-bottom: 14px;
+}
+.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+.terminal-dot.red { background: #ff5f57; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #28ca41; }
+.terminal-title {
+  color: rgba(255,255,255,0.5);
+  font-size: 11px;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+.term-line {
+  opacity: 0;
+  transform: translateY(6px);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.term-line.visible { animation: lineReveal 0.35s ease forwards; }
+@keyframes lineReveal { to { opacity: 1; transform: translateY(0); } }
+
+.term-prompt { color: var(--yellow); font-weight: 700; }
+.term-cmd { color: #fff; font-weight: 500; }
+.term-output { color: rgba(255,255,255,0.85); }
+.term-gold {
+  background: var(--yellow);
+  color: var(--blue-deep);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.cursor {
+  display: inline-block;
+  width: 9px; height: 17px;
+  background: #fff;
+  vertical-align: middle;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ============================================
+   TAB 1 - SECTION A: TERMINAL HERO
+   ============================================ */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.hero-cta {
+  margin-top: 36px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  cursor: pointer;
+}
+.hero-cta.visible { opacity: 1; }
+.hero-cta.hidden { opacity: 0; pointer-events: none; }
+.hero-cta .cta-text {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: 1px;
+}
+.hero-cta .cta-arrow {
+  font-size: 18px;
+  color: var(--ink-faint);
+  margin-top: 8px;
+  animation: bounce 1.6s ease infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* Transition overlay between hero zoom and desktop */
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--blue);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.transition-overlay.active { opacity: 1; pointer-events: auto; }
+

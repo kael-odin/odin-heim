@@ -39,12 +39,23 @@ npm run preview  # 预览构建产物
 | --- | --- |
 | `name` / `nameEn` / `role` / `slogan` | 终端 `whoami` 开场白、浏览器标题、作品集副标题 |
 | `bioLines` | 终端里逐行打出的自我介绍（2~4 行） |
+| `menuItems` | OS 桌面顶部菜单栏（可点击跳转到对应标签页） |
 | `email` / `socials` | 「联系我」窗口与告别屏的联系方式 |
 | `sticker` | 桌面左下角可拖拽的头像贴纸 |
 | `desktopIcons` | 桌面图标：链接 / 内置窗口 / 图标外观 / 位置 |
-| `contact` / `projects` / `assistant` | 三个内置弹窗的内容 |
+| `contact` / `projects` / `assistant` | 三个内置弹窗的内容（下表列了可用的弹窗 id） |
 | `workflowColumns` / `works` | 作品集页的工作流三栏与作品卡片 |
 | `about` | 「关于」标签页（仿关于本机面板） |
+
+内置弹窗 id（`desktopIcons` 里 `win` 字段可用的值）：
+
+| id | 窗口 | 内容来源 |
+| --- | --- | --- |
+| `win-hello` | 使用指南（首次进入桌面的引导） | 固定文案，直接双击看效果 |
+| `win-contact` | 联系我 | `contact` + `socials` |
+| `win-projects` | 我的项目（文件夹） | `projects` |
+| `win-assistant` | AI 助手（仿聊天界面） | `assistant` |
+| `win-meta` | 关于本站（套娃彩蛋） | 固定彩蛋，无配置 |
 
 ### 第 2 步：换图片
 
@@ -76,18 +87,37 @@ npm run preview  # 预览构建产物
 ## 📁 项目结构
 
 ```
-├── index.html                    # 入口 HTML（标题/描述由配置运行时覆盖）
+├── index.html                          # 入口 HTML（标题/描述由配置运行时覆盖）
 ├── public/
-│   ├── avatar.svg                # 占位头像贴纸 ← 换成你的
+│   ├── avatar.svg                      # 占位头像贴纸 ← 换成你的
 │   └── favicon.svg
 └── src/
-    ├── config/siteConfig.js      # ★ 站点唯一配置文件
+    ├── config/siteConfig.js            # ★ 站点唯一配置文件
     ├── components/
-    │   ├── HomePage.jsx          # 页面结构（主页 / 作品集 / 关于 + 内置弹窗）
-    │   └── homeData.js           # 壁纸星星（纯装饰）
-    ├── lib/siteController.js     # 交互控制器：开机动画 / 窗口管理 / 告别循环
-    └── styles/site.css           # 全部样式与动画
+    │   ├── HomePage.jsx                # 页面编排：导航 + 三个标签页
+    │   ├── DesktopIcons.jsx            # 桌面图标渲染
+    │   ├── tabs/
+    │   │   ├── HomeTab.jsx             # 主页：终端启动 → 桌面 → 告别屏
+    │   │   ├── WorksTab.jsx            # 作品集：工作流三栏 + 作品卡片
+    │   │   └── AboutTab.jsx            # 关于：仿「关于本机」面板
+    │   └── windows/
+    │       └── index.jsx               # 内置弹窗库（win-hello/contact/projects/assistant/meta）
+    ├── data/
+    │   └── wallpaperStars.js           # 壁纸星星参数（纯装饰）
+    ├── lib/
+    │   ├── siteController.js           # 交互编排入口：初始化 + 卸载清理
+    │   └── sections/                   # 各交互模块（tabs/时钟/终端/窗口/壁纸/贴纸/告别循环）
+    └── styles/
+        ├── site.css                    # 样式入口（按顺序导入 sections）
+        └── sections/                   # 按职责拆分的样式（桌面/窗口/关于/移动端…）
 ```
+
+## 🔧 二次开发小抄
+
+- **增一个桌面图标**：在 `desktopIcons` 里加一行，图标外观见 `art` 注释（新增 `png`、`birthday` 两种）
+- **增一个弹窗窗口**：在 `src/components/windows/index.jsx` 的 `TEMPLATES` 里注册 `[id, 组件]`，桌面图标 `win` 填该 id
+- **改交互逻辑**：去 `src/lib/sections/` 对应模块（注释都是中文，一眼就能找到）
+- **改样式**：去 `src/styles/sections/` 对应文件，注意 `site.css` 的导入顺序即级联顺序
 
 ## 📄 许可证
 

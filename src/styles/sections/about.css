@@ -1,0 +1,144 @@
+
+/* ============================================
+   ABOUT TAB（仿「关于本机」面板）
+   ============================================ */
+.about-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 24px 80px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(43,127,216,0.08), transparent 42%),
+    radial-gradient(circle at 85% 80%, rgba(244,215,88,0.14), transparent 45%),
+    var(--cream);
+}
+
+.about-panel {
+  width: min(560px, 100%);
+  background: #fff;
+  border: 1px solid rgba(26,26,46,0.08);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(26,26,46,0.12), 0 2px 8px rgba(26,26,46,0.05);
+  overflow: hidden;
+}
+
+.about-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(26,26,46,0.07);
+  background: var(--cream-dark);
+}
+
+.about-title-text {
+  flex: 1;
+  text-align: center;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.about-hero {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 30px 32px 18px;
+}
+
+.about-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(26,26,46,0.14);
+}
+
+.about-os-name {
+  font-family: 'Fraunces', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 30px;
+  color: var(--ink);
+}
+
+.about-os-version {
+  margin-top: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.about-specs {
+  padding: 8px 32px 20px;
+  border-bottom: 1px dashed rgba(26,26,46,0.12);
+}
+
+.about-spec {
+  display: flex;
+  gap: 18px;
+  padding: 7px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-light);
+}
+
+.about-spec-label {
+  flex: 0 0 4.5em;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.about-skills {
+  padding: 20px 32px;
+}
+
+.about-skills-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.about-skills-title::before { content: '$ '; color: var(--red); }
+
+.about-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.about-skill-tag {
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue-deep);
+  background: rgba(43,127,216,0.1);
+  border: 1px solid rgba(43,127,216,0.22);
+}
+
+.about-skill-tag:nth-child(3n) { color: var(--ink); background: rgba(244,215,88,0.28); border-color: rgba(244,215,88,0.6); }
+.about-skill-tag:nth-child(3n+1) { color: var(--red); background: rgba(232,74,95,0.08); border-color: rgba(232,74,95,0.25); }
+
+.about-quote {
+  margin: 4px 32px 28px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--yellow);
+  background: var(--cream-dark);
+  border-radius: 0 10px 10px 0;
+  font-family: 'Caveat', 'Noto Serif SC', cursive;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-light);
+}
+
+@media (max-width: 768px) {
+  .about-page { padding: 72px 16px 64px; }
+  .about-hero { padding: 24px 20px 12px; gap: 16px; }
+  .about-avatar { width: 72px; height: 72px; border-radius: 18px; }
+  .about-os-name { font-size: 24px; }
+  .about-specs { padding: 6px 20px 16px; }
+  .about-skills { padding: 16px 20px; }
+  .about-quote { margin: 4px 20px 22px; }
+}

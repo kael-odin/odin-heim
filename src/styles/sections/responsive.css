@@ -1,0 +1,43 @@
+/* ============================================
+   MOBILE
+   ============================================ */
+@media (max-width: 768px) {
+  .macbook-screen-bezel, .exit-bezel { width: 368px; padding: 10px; padding-top: 0; border-radius: 10px 10px 0 0; }
+  .macbook-notch, .exit-notch { width: 80px; height: 10px; }
+  .macbook-screen, .exit-screen { width: 348px; height: 260px; border-radius: 3px; }
+  .macbook-hinge, .exit-hinge { width: 378px; }
+  .macbook-base, .exit-base { width: 400px; height: 10px; border-radius: 0 0 8px 8px; }
+  .macbook-shadow, .exit-shadow { width: 360px; }
+
+  .terminal { padding: 10px 12px; font-size: 10px; }
+  .terminal-titlebar { gap: 5px; padding-bottom: 8px; margin-bottom: 10px; }
+  .terminal-dot { width: 7px; height: 7px; }
+  .terminal-title { font-size: 9px; }
+  .term-gold { font-size: 11px; }
+
+  .pill-nav { bottom: 16px; }
+  .pill-nav button { font-size: 12px; padding: 8px 13px; }
+  .pill-nav .pill-num { display: none; }
+
+
+  .goodbye-terminal { font-size: 11px; line-height: 1.9; }
+
+  .workflow-screen { padding: 30px 20px; }
+  .workflow-headline { font-size: 36px; }
+  .workflow-subtitle { font-size: 11px; margin-bottom: 36px; }
+  .workflow-columns { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Desktop metaphor on small screens */
+  .desktop-sticker { width: 150px; left: 12px; right: auto; bottom: 16px; }
+  .dicon { width: 68px; }
+  .dicon-art { width: 42px; height: 42px; }
+  .dicon-label { font-size: 10px; }
+  .win-sayhi .services-grid { grid-template-columns: 1fr; }
+  .os-body.win-sayhi { padding: 28px 20px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .wp-star, .click-star { animation: none; }
+  .os-window { animation: none; }
+}

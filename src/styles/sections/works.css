@@ -1,0 +1,120 @@
+.workflow-screen {
+  max-width: 1000px;
+  width: 100%;
+  padding: 40px 60px;
+  text-align: center;
+}
+.workflow-headline {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(48px, 7vw, 76px);
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.workflow-subtitle {
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #999;
+  letter-spacing: 2px;
+  margin-bottom: 56px;
+}
+.workflow-col-title {
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+.workflow-col-line {
+  width: 40px; height: 3px;
+  background: var(--yellow);
+  border-radius: 2px;
+  margin-bottom: 28px;
+}
+.workflow-item { margin-bottom: 24px; }
+.workflow-item-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--blue-deep);
+  margin-bottom: 4px;
+}
+.workflow-item-desc {
+  display: block;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+}
+
+
+/* ============================================
+   TAB 2: WORKS (skeleton)
+   ============================================ */
+.works-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(70px, 12vh, 120px) 24px 140px;
+}
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 36px;
+}
+.work-dim {
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  min-height: 220px;
+}
+.work-dim h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+.work-dim .dim-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--blue);
+}
+.work-dim .dim-empty {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--ink-faint);
+  border: 1px dashed rgba(26,26,46,0.15);
+  border-radius: 8px;
+  padding: 24px 16px;
+  text-align: center;
+}
+.dim-desc {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-light);
+  line-height: 1.7;
+}
+.dim-works-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dim-work-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--cream);
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.dim-work-item:hover { background: rgba(43,127,216,0.08); }
+.dim-work-icon { font-size: 16px; }
+

@@ -54,8 +54,13 @@ export const siteConfig = {
     { label: '关于我', href: 'https://example.com/about' },
   ],
 
-  /* ---------- 菜单栏（右侧跳转锚点文案） ---------- */
-  menuItems: ['About', 'Works', 'Now'],
+  /* ---------- 菜单栏（OS 桌面顶部，可点击跳转到对应标签页） ----------
+   * tab 可填 'home' | 'works' | 'about'；不填 tab 则仅作装饰展示 */
+  menuItems: [
+    { label: 'About', tab: 'about' },
+    { label: 'Works', tab: 'works' },
+    { label: 'Now', tab: '' },
+  ],
 
   /* ============================================================
    *  桌面图标
@@ -63,7 +68,9 @@ export const siteConfig = {
    *  type: 'window' → 双击后打开内置弹窗（win 必须与 HomePage.jsx 里 WindowTemplates
    *                    的弹窗 id 一致：win-hello / win-contact / win-projects /
    *                    win-assistant / win-meta）
-   *  art:  'md' | 'html' | 'git' | 'folder' | 'image'  （图标外观）
+   *  art:  'md' | 'html' | 'git' | 'png' | 'folder' | 'image' | 'birthday'
+   *        （图标外观：md/html/git/png 带对应扩展角标，image 显示自定义图片，
+   *          birthday 是礼物盒彩蛋图标）
    *  style: 桌面位置。默认从右上角排两列，可自由调整 top / right
    * ============================================================ */
   desktopIcons: [

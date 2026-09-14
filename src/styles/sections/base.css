@@ -1,0 +1,114 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #fefcf6;
+  --cream-dark: #faf6eb;
+  --ink: #1A1A2E;
+  --ink-light: #4A4A5A;
+  --ink-faint: #8A8A9A;
+  --blue: #2B7FD8;
+  --yellow: #F4D758;
+  --red: #E84A5F;
+  --term-bg: #151821;
+  --blue-deep: #1E5BA8;
+  --term-green: #4ade80;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { overflow: hidden; }
+html.scroll-unlocked { overflow: auto; overflow-x: hidden; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+::selection { background: var(--yellow); color: var(--ink); }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(26, 26, 46, 0.25) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: rgba(26, 26, 46, 0.2); border-radius: 8px; }
+*::-webkit-scrollbar-thumb:hover { background: rgba(26, 26, 46, 0.32); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* ============================================
+   ACCESSIBLE SEMANTIC SUMMARY
+   ============================================ */
+.semantic-summary {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   TAB SYSTEM
+   ============================================ */
+.tab-page { display: none; }
+.tab-page.active { display: block; animation: tabFade 0.4s var(--ease-out); }
+@keyframes tabFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#page-home { background: var(--cream); }
+
+/* ============================================
+   PILL NAV (bottom floating capsule)
+   ============================================ */
+.pill-nav {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(26, 26, 46, 0.08);
+  border-radius: 999px;
+  padding: 5px;
+  box-shadow: 0 8px 32px rgba(26, 26, 46, 0.12);
+  transition: opacity 0.4s ease, transform 0.4s var(--ease-out);
+}
+.pill-nav.hidden-during-intro {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(16px);
+}
+.pill-nav button {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-light);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.pill-nav button:hover { color: var(--ink); }
+.pill-nav button.active {
+  background: var(--blue);
+  color: #fff;
+}
+.pill-nav .pill-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  opacity: 0.5;
+  margin-right: 5px;
+}
+

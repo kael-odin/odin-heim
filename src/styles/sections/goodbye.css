@@ -1,0 +1,153 @@
+/* ============================================
+   TAB 1 - SECTION C: EXIT ZOOM-OUT (scroll-driven)
+   ============================================ */
+.exit-section {
+  position: relative;
+  height: 400vh;
+  background: var(--cream);
+  z-index: 5;
+}
+.exit-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--cream);
+}
+.exit-macbook-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform, opacity;
+}
+.exit-bezel {
+  position: relative;
+  background: #2a2a30;
+  border-radius: 14px 14px 0 0;
+  padding: 14px;
+  padding-top: 0;
+  width: 708px;
+}
+.exit-notch {
+  width: 130px; height: 14px;
+  background: #2a2a30;
+  border-radius: 0 0 10px 10px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.exit-screen {
+  width: 680px; height: 440px;
+  background: var(--blue);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.exit-hinge {
+  width: 720px; height: 3px;
+  background: linear-gradient(180deg, #8a8a8e 0%, #6e6e72 100%);
+  border-radius: 0 0 2px 2px;
+}
+.exit-base {
+  width: 760px; height: 14px;
+  background: linear-gradient(180deg, #c8c8cc 0%, #a8a8ac 30%, #b8b8bc 70%, #9a9a9e 100%);
+  border-radius: 0 0 10px 10px;
+}
+.exit-shadow {
+  width: 700px; height: 40px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, transparent 70%);
+  margin-top: 4px;
+}
+
+/* Goodbye / Say Hi screen inside exit MacBook */
+.goodbye-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  overflow: hidden;
+}
+.goodbye-screen.visible { opacity: 1; }
+.goodbye-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 20px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.goodbye-title-text {
+  color: rgba(255,255,255,0.5);
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  margin: 0 auto;
+}
+.goodbye-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 28px;
+}
+/* Goodbye terminal style */
+.goodbye-terminal {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 2;
+  padding: 0 8px;
+  text-align: left;
+}
+.goodbye-terminal .gt-line { white-space: pre-wrap; }
+.goodbye-terminal .gt-prompt { color: var(--yellow); font-weight: 700; }
+.goodbye-terminal .gt-cmd { color: #fff; font-weight: 500; }
+.goodbye-terminal .gt-output { color: rgba(255,255,255,0.85); padding-left: 16px; }
+.goodbye-terminal .gt-output::before { content: '> '; color: var(--yellow); }
+.goodbye-terminal .gt-dim { color: rgba(255,255,255,0.55); font-style: italic; padding-left: 16px; font-size: 12px; }
+.goodbye-terminal .gt-gold {
+  background: var(--yellow);
+  color: var(--blue-deep);
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.goodbye-terminal a { color: var(--yellow); text-decoration: none; }
+.goodbye-terminal a:hover { text-decoration: underline; }
+.goodbye-footer {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Loop hint below exit macbook */
+.back-to-top {
+  text-align: center;
+  padding: 32px 0 60px;
+}
+.back-to-top a {
+  display: inline-block;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: #999;
+  text-decoration: none;
+  letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+.back-to-top a:hover { color: #555; }
+.back-to-top .back-arrow {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+  animation: pulseUp 2s ease-in-out infinite;
+}
+@keyframes pulseUp {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-6px); opacity: 1; }
+}
