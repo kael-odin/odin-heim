@@ -1,5 +1,5 @@
 {
-  "name": "my-os-homepage",
+  "name": "odin-heim",
   "version": "1.0.0",
   "description": "An OS-style interactive personal homepage template: terminal boot, draggable desktop, works and about tabs. Edit one config file to make it yours.",
   "private": true,
@@ -10,9 +10,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kael-odin/my-os-homepage.git"
+    "url": "git+https://github.com/kael-odin/odin-heim.git"
   },
-  "homepage": "https://kael-odin.github.io/my-os-homepage/",
+  "homepage": "https://kael-odin.github.io/odin-heim/",
   "keywords": [
     "personal-homepage",
     "template",
