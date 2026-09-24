@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="t d">
+  <title id="t">ODIN HEIM</title>
+  <desc id="d">Odin 系列 HEIM —— 家 · OS 风互动主页，终端开机进入数字桌面</desc>
+  <rect width="1200" height="320" rx="26" fill="#0B0F1A"/>
+  <g transform="translate(56 54)">
+    <rect width="36" height="36" rx="9" fill="#38BDF8" fill-opacity="0.13" stroke="#38BDF8" stroke-opacity="0.55"/>
+    <path d="M7,3 L7,21 M17,3 L17,21 M7,9.5 L17,14.5" transform="translate(6 6)" fill="none" stroke="#38BDF8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="104" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, &quot;Consolas&quot;, monospace" font-size="17" letter-spacing="2.5" fill="#8B9BB4">ODIN SERIES · 05 / 05 · GITHUB PAGES</text>
+  <text x="56" y="156" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="54" font-weight="800" letter-spacing="1"><tspan fill="#F1F5F9">ODIN </tspan><tspan fill="#38BDF8">HEIM</tspan></text>
+  <text x="56" y="200" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="25" font-weight="600" fill="#D7DEE8">家 · OS 风互动主页，终端开机进入数字桌面</text>
+  <text x="56" y="236" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="19" fill="#8B9BB4">Vite · 原生 JavaScript · 单文件配置 siteConfig.js</text>
+  <text x="56" y="276" font-family="ui-monospace, SFMono-Regular, Menlo, &quot;Consolas&quot;, monospace" font-size="17" fill="#5F6F8C">github.com/kael-odin/odin-heim</text>
+  <g transform="translate(770 44)">
+    <rect width="374" height="232" rx="14" fill="#131A2B" stroke="#26334D"/>
+    <rect x="47" y="30" width="280" height="152" rx="12" fill="#1A2336" stroke="#26334D"/>
+    <line x1="47" y1="60" x2="327" y2="60" stroke="#26334D"/>
+    <circle cx="66" cy="45" r="5" fill="#E84A5F"/><circle cx="84" cy="45" r="5" fill="#F4D758"/><circle cx="102" cy="45" r="5" fill="#2B7FD8"/>
+    <rect x="72" y="80" width="40" height="40" rx="9" fill="#38BDF8" fill-opacity="0.16" stroke="#38BDF8" stroke-opacity="0.7"/>
+    <path d="M86 94 L98 94 M86 101 L98 101 M86 108 L94 108" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round"/>
+    <rect x="132" y="80" width="40" height="40" rx="9" fill="none" stroke="#26334D"/>
+    <circle cx="152" cy="100" r="9" fill="none" stroke="#8B9BB4" stroke-width="2.2"/>
+    <rect x="72" y="132" width="236" height="20" rx="10" fill="#0B0F1A" stroke="#26334D"/>
+    <rect x="84" y="137" width="10" height="10" rx="3" fill="#8B9BB4" fill-opacity="0.6"/>
+    <rect x="102" y="137" width="10" height="10" rx="3" fill="#38BDF8" fill-opacity="0.8"/>
+    <rect x="120" y="137" width="10" height="10" rx="3" fill="#8B9BB4" fill-opacity="0.4"/>
+    <rect x="138" y="137" width="10" height="10" rx="3" fill="#8B9BB4" fill-opacity="0.3"/>
+    <text x="18" y="219" font-family="ui-monospace, SFMono-Regular, Menlo, &quot;Consolas&quot;, monospace" font-size="16" fill="#5F6F8C" letter-spacing="1">desktop os</text>
+  </g>
+</svg>
