@@ -1,6 +1,6 @@
 /* Hash 路由 + 滚动锁：主页未「开机」前锁滚动，其余页面可滚动 */
 
-const TABS = ['home', 'works', 'about'];
+const TABS = ['home', 'works', 'system', 'about'];
 
 export function initTabs(ctx) {
   const pillNav = document.getElementById('pillNav');

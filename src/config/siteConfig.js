@@ -76,7 +76,7 @@ export const siteConfig = {
     { type: 'link', label: '博客.md', href: 'https://odin-saga.vercel.app/', art: 'md', style: { top: '24px', right: '24px' } },
     { type: 'link', label: '学术Skill榜', href: 'https://github.com/kael-odin/awesome-academic-research-skills', art: 'md', style: { top: '114px', right: '24px' } },
     { type: 'link', label: '提示词镜像', href: 'https://kael-odin.github.io/prompts-chat-zh/', art: 'md', style: { top: '204px', right: '24px' } },
-    { type: 'link', label: 'Amadeus-Agent', href: 'https://github.com/kael-odin/Amadeus-Agent', art: 'html', style: { top: '294px', right: '24px' } },
+    { type: 'link', label: 'Amadeus', href: 'https://github.com/kael-odin/Amadeus-Agent', art: 'html', style: { top: '294px', right: '24px' } },
     { type: 'window', label: '我的项目', win: 'win-projects', art: 'folder', style: { top: '24px', right: '114px' } },
     { type: 'link', label: 'GitHub', href: 'https://github.com/kael-odin', art: 'git', style: { top: '114px', right: '114px' } },
     { type: 'window', label: '联系我', win: 'win-contact', art: 'folder', style: { top: '204px', right: '114px' } },
@@ -129,29 +129,30 @@ export const siteConfig = {
    *  workflowColumns: 顶部三列工作流概览
    *  works: 作品维度卡片。links: [emoji, href, 标签]；empty: 占位文案
    * ============================================================ */
+  /* 三列工作流：标题风格对齐 hiesther.me/#works */
   workflowColumns: [
     {
-      title: 'INPUT · 输入',
+      title: 'RESEARCH & THINK',
       items: [
-        ['阅读', '记录读过的书、文章和灵感碎片'],
-        ['观察', '收集行业动态与优秀案例'],
-        ['思考', '把输入沉淀成自己的框架'],
+        ['竞品与协议分析', '代理 / 采集业务专项测试设计：连通率、延迟、轮换正确性'],
+        ['数据核对', 'SQL 校验与抓包分析，让每一次判断都有数据支撑'],
+        ['模型选型评测', '横向对比大模型与 Agent 工具，输出团队引入依据'],
       ],
     },
     {
-      title: 'CREATE · 创造',
+      title: 'CREATE & BUILD',
       items: [
-        ['写作', '博客、教程、随笔与分享'],
-        ['项目', '用代码把想法做成能用的小工具'],
-        ['设计', '海报、页面与个人品牌物料'],
+        ['自动化流水线', 'GitHub Actions 驱动的榜单与镜像站，每日自动更新'],
+        ['知识库与 RAG', 'FastGPT 企业知识库：文档清洗、切片与检索调优'],
+        ['开源小工具', '把想法做成能用的东西：先跑通，再讲清楚'],
       ],
     },
     {
-      title: 'SHARE · 分享',
+      title: 'ANALYZE & OPERATE',
       items: [
-        ['发布', '博客 / 社媒 / 开源社区'],
-        ['交流', '和同好互相反馈、共同成长'],
-        ['复盘', '定期回顾，让方法论可复用'],
+        ['测试全流程', '需求评审 → 用例 → 执行 → 缺陷跟踪 → 回归验证'],
+        ['缺陷推动', '累计发现并推动修复 300+ 缺陷，沉淀可复用用例'],
+        ['常态化 AI 支持', 'llama.cpp 私有化部署，为 50+ 同事提供 AI 配置支持'],
       ],
     },
   ],

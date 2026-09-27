@@ -19,6 +19,13 @@
   letter-spacing: 2px;
   margin-bottom: 56px;
 }
+.workflow-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  text-align: left;
+  margin-bottom: 72px;
+}
 .workflow-col-title {
   font-family: sans-serif;
   font-size: 12px;
@@ -118,3 +125,83 @@
 .dim-work-item:hover { background: rgba(43,127,216,0.08); }
 .dim-work-icon { font-size: 16px; }
 
+
+
+/* ============================================
+   TAB: SYSTEM —— 共享画布（留言便签 + 贴纸）
+   ============================================ */
+.system-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(70px, 12vh, 120px) 24px 140px;
+}
+.canvas-board {
+  position: relative;
+  height: 560px;
+  border: 1px solid #e8e4da;
+  border-radius: 16px;
+  background-color: #fbfaf6;
+  background-image: radial-gradient(#d8d3c4 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow: hidden;
+  touch-action: none;
+}
+.canvas-note {
+  position: absolute;
+  width: 190px;
+  padding: 14px 14px 12px;
+  border-radius: 4px;
+  box-shadow: 0 8px 18px rgba(31, 41, 55, 0.14);
+  font-family: 'Noto Sans SC', sans-serif;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.canvas-note:active { cursor: grabbing; }
+.canvas-note-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #3f3a2f;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+.canvas-note-meta {
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(63, 58, 47, 0.55);
+}
+.canvas-note-del {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  border: none;
+  background: none;
+  color: rgba(63, 58, 47, 0.4);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+}
+.canvas-note-del:hover { color: #b4483c; }
+.canvas-sticker {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  filter: drop-shadow(0 6px 10px rgba(31, 41, 55, 0.18));
+  pointer-events: auto;
+}
+.canvas-sticker:active { cursor: grabbing; }
+.canvas-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  color: #a49f8f;
+  pointer-events: none;
+  white-space: nowrap;
+}
