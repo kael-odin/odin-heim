@@ -17,7 +17,7 @@
 | --- | --- |
 | ![终端开机](docs/screenshot-terminal.png) | ![个人桌面](docs/screenshot-desktop.png) |
 | **AI 助手窗口** | **关于页** |
-| ![AI 助手窗口](docs/screenshot-assistant.png) | ![关于页](docs/screenshot-about.png) |
+| ![AI 助手窗口](docs/screenshot-assistant.png) | ![共享画布](docs/screenshot-canvas.png) |
 
 ## 🌟 特性
 
