@@ -32,6 +32,8 @@ export default function SystemTab() {
   const [view, setView] = useState({ x: 0, y: 0, scale: 1 });
   const [panelOpen, setPanelOpen] = useState(true);
   const [emojiPicker, setEmojiPicker] = useState(false);
+  const [noteModal, setNoteModal] = useState(null); // { text, who }
+  const fileRef = useRef(null);
   const dragRef = useRef(null);
 
   useEffect(() => {
@@ -100,12 +102,15 @@ export default function SystemTab() {
     dragRef.current = null;
   };
 
-  /* --- 留言：视口中心放一张便签 --- */
-  const addNote = () => {
+  /* --- 留言：模态填写（内容 + 署名），确认后放到视口中心 --- */
+  const openNoteModal = () => {
+    setEmojiPicker(false);
+    setNoteModal({ text: '', who: '' });
+  };
+
+  const submitNote = () => {
     const board = boardRef.current;
-    if (!board) return;
-    const text = window.prompt('写一条留言：');
-    if (!text || !text.trim()) return;
+    if (!noteModal || !noteModal.text.trim() || !board) return;
     const rect = board.getBoundingClientRect();
     const cx = (rect.width / 2 - view.x) / view.scale;
     const cy = (rect.height / 2 - view.y) / view.scale;
@@ -113,9 +118,11 @@ export default function SystemTab() {
       id: 'n' + Date.now(), type: 'note',
       x: cx - 95, y: cy - 40,
       color: Math.floor(Math.random() * NOTE_COLORS.length),
-      text: text.trim(), who: '访客',
+      text: noteModal.text.trim(),
+      who: noteModal.who.trim() || '访客',
     };
     persist([...items, item]);
+    setNoteModal(null);
   };
 
   /* --- 贴一张：emoji 贴纸 --- */
@@ -128,6 +135,36 @@ export default function SystemTab() {
     const cy = (rect.height / 2 - view.y) / view.scale;
     const item = { id: 's' + Date.now(), type: 'sticker', x: cx - 28, y: cy - 28, emoji, who: '访客' };
     persist([...items, item]);
+  };
+
+  /* --- 贴一张：上传图片（前端压缩到最长边 640px，dataURL 存本地） --- */
+  const onPickImage = (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file || !file.type.startsWith('image/')) return;
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const maxSide = 640;
+      const ratio = Math.min(1, maxSide / Math.max(img.width, img.height));
+      const w = Math.max(1, Math.round(img.width * ratio));
+      const h = Math.max(1, Math.round(img.height * ratio));
+      const cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      let dataUrl;
+      try { dataUrl = cv.toDataURL('image/webp', 0.82); } catch { dataUrl = cv.toDataURL('image/jpeg', 0.82); }
+      const board = boardRef.current;
+      if (!board) return;
+      const rect = board.getBoundingClientRect();
+      const cx = (rect.width / 2 - view.x) / view.scale;
+      const cy = (rect.height / 2 - view.y) / view.scale;
+      const item = { id: 'p' + Date.now(), type: 'sticker', x: cx - w * 0.35, y: cy - h * 0.35, img: dataUrl, who: '访客' };
+      persist([...items, item]);
+      setEmojiPicker(false);
+    };
+    img.src = url;
   };
 
   /* --- 卡片列表点击：把元素带到视口中心 --- */
@@ -159,9 +196,11 @@ export default function SystemTab() {
         <div className="canvas-toolbar">
           <span className="canvas-badge">🟡 共享白板</span>
           <div className="canvas-actions">
-            <button className="canvas-btn canvas-btn-primary" onClick={addNote}>✍️ 留言</button>
+            <button className="canvas-btn canvas-btn-primary" onClick={openNoteModal}>✍️ 留言</button>
             <div className="canvas-btn-group">
-              <button className="canvas-btn" onClick={() => setEmojiPicker((v) => !v)}>+ 贴一张</button>
+              <button className="canvas-btn" onClick={() => fileRef.current && fileRef.current.click()} title="上传一张图片贴到画布">🖼 图片</button>
+              <button className="canvas-btn" onClick={() => setEmojiPicker((v) => !v)}>😀 表情</button>
+              <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={onPickImage} />
               {emojiPicker && (
                 <div className="canvas-emoji-pop">
                   {STICKER_EMOJIS.map((e) => (
@@ -246,6 +285,34 @@ export default function SystemTab() {
           </div>
         </div>
       </div>
+
+      {noteModal && (
+        <div className="canvas-modal-mask" onClick={() => setNoteModal(null)}>
+          <div className="canvas-modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="canvas-modal-title">✍️ 写留言</h3>
+            <textarea
+              className="canvas-modal-text"
+              placeholder="写点什么……"
+              rows={4}
+              value={noteModal.text}
+              autoFocus
+              onChange={(e) => setNoteModal({ ...noteModal, text: e.target.value })}
+            />
+            <input
+              className="canvas-modal-who"
+              placeholder="署名（可留空，默认「访客」）"
+              value={noteModal.who}
+              onChange={(e) => setNoteModal({ ...noteModal, who: e.target.value })}
+            />
+            <div className="canvas-modal-actions">
+              <button className="canvas-btn" onClick={() => setNoteModal(null)}>取消</button>
+              <button className="canvas-btn canvas-btn-primary" onClick={submitNote} disabled={!noteModal.text.trim()}>
+                贴到画布
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
