@@ -1,141 +1,249 @@
 import { useEffect, useRef, useState } from 'react';
-import siteConfig from '../../config/siteConfig';
 
-/* TAB: system —— 共享画布：留言便签 + 可拖拽贴纸（本地持久化） */
+/* TAB: system —— 共享白板：无限画布（留言便签 + 贴纸），对标 hiesther.me/#system
+ * 功能：Drag 平移 / Scroll 缩放（指针为中心）/ ✍️留言 / +贴一张 / 卡片列表定位 / 本地持久化 */
 
-const STORE_KEY = 'kael_os_canvas_v1';
+const STORE_KEY = 'kael_os_canvas_v2';
 const NOTE_COLORS = ['#FFF3B0', '#FFD6A5', '#C9F2C7', '#CDE7FF', '#F6C6D0'];
+const STICKER_EMOJIS = ['⭐', '🤖', '🧪', '🐱', '☕', '🎉', '💡', '🔥', '🚀', '🧠', '❤️', '😎'];
+const MIN_SCALE = 0.3;
+const MAX_SCALE = 2.5;
 
-const SEED_NOTES = [
-  { x: 0.06, y: 0.10, color: 0, text: '欢迎来到我的系统画布 ✨\n双击任意空白处，写下你想说的话。', who: '汤勇 Kael Odin' },
-  { x: 0.42, y: 0.24, color: 2, text: '正在折腾的东西都会贴在这里：榜单、镜像站、小工具……', who: '汤勇 Kael Odin' },
-  { x: 0.14, y: 0.58, color: 3, text: '对某个项目有想法？留一张便签，我会逐条看。', who: '汤勇 Kael Odin' },
-  { x: 0.62, y: 0.62, color: 1, text: '先跑通，再讲清楚。', who: '座右铭' },
+const SEED_ITEMS = [
+  { id: 'seed-n0', type: 'note', x: -180, y: -140, color: 0, text: '欢迎来到共享白板 ✨\n点右上「✍️ 留言」写下你想说的话，或「+ 贴一张」丢个贴纸。', who: '汤勇 Kael Odin' },
+  { id: 'seed-n1', type: 'note', x: 60, y: -40, color: 2, text: '正在折腾的东西都会贴在这里：榜单、镜像站、小工具……', who: '汤勇 Kael Odin' },
+  { id: 'seed-n2', type: 'note', x: -220, y: 80, color: 3, text: '先跑通，再讲清楚。', who: '座右铭' },
+  { id: 'seed-s0', type: 'sticker', x: 260, y: -150, emoji: '⭐', who: '站长' },
+  { id: 'seed-s1', type: 'sticker', x: 300, y: 60, emoji: '🤖', who: '站长' },
+  { id: 'seed-s2', type: 'sticker', x: -80, y: 170, emoji: '🧪', who: '站长' },
 ];
 
-const SEED_STICKERS = [
-  { x: 0.78, y: 0.12, src: 'avatar.png', size: 84, label: '我的头像贴纸' },
-  { x: 0.30, y: 0.34, emoji: '🤖', size: 56, label: 'AI 贴纸' },
-  { x: 0.86, y: 0.55, emoji: '🧪', size: 52, label: '测试贴纸' },
-  { x: 0.55, y: 0.08, emoji: '⭐', size: 48, label: '星星贴纸' },
-];
+function loadItems() {
+  try {
+    const saved = localStorage.getItem(STORE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch { /* 隐私模式等 */ }
+  return SEED_ITEMS.map((it) => ({ ...it }));
+}
 
 export default function SystemTab() {
   const boardRef = useRef(null);
-  const dragState = useRef(null);
-  const [notes, setNotes] = useState([]);
-  const [stickers, setStickers] = useState([]);
+  const [items, setItems] = useState([]);
+  const [view, setView] = useState({ x: 0, y: 0, scale: 1 });
+  const [panelOpen, setPanelOpen] = useState(true);
+  const [emojiPicker, setEmojiPicker] = useState(false);
+  const dragRef = useRef(null);
 
-  /* 初始化：读 localStorage，否则用种子数据 */
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORE_KEY);
-      if (saved) {
-        const d = JSON.parse(saved);
-        setNotes(d.notes ?? []);
-        setStickers(d.stickers ?? []);
-        return;
-      }
-    } catch (e) { /* 隐私模式等：直接用种子 */ }
-    setNotes(SEED_NOTES.map((n, i) => ({ id: 'n' + i, ...n })));
-    setStickers(SEED_STICKERS.map((s, i) => ({ id: 's' + i, ...s })));
+    setItems(loadItems());
   }, []);
 
-  const persist = (nextNotes, nextStickers) => {
+  const persist = (next) => {
+    setItems(next);
     try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({ notes: nextNotes, stickers: nextStickers }));
-    } catch (e) { /* 存不下就只留在内存 */ }
+      localStorage.setItem(STORE_KEY, JSON.stringify(next));
+    } catch { /* 存不下就留在内存 */ }
   };
 
-  /* 通用拖拽：pointer 事件 + 百分比坐标存储 */
-  const startDrag = (e, id, kind) => {
+  /* --- 缩放：以指针为锚点 --- */
+  const onWheel = (e) => {
+    e.preventDefault();
     const board = boardRef.current;
     if (!board) return;
-    const items = kind === 'note' ? notes : stickers;
-    const item = items.find((it) => it.id === id);
-    if (!item) return;
     const rect = board.getBoundingClientRect();
-    dragState.current = { id, kind, rect, dx: e.clientX - (rect.left + item.x * rect.width), dy: e.clientY - (rect.top + item.y * rect.height) };
-    e.target.setPointerCapture?.(e.pointerId);
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    setView((v) => {
+      const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+      const scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, v.scale * factor));
+      // 保持指针下的画布坐标不动：new = p - (p - old) * (new/old)
+      const x = px - ((px - v.x) * scale) / v.scale;
+      const y = py - ((py - v.y) * scale) / v.scale;
+      return { x, y, scale };
+    });
   };
 
-  useEffect(() => {
-    const onMove = (e) => {
-      const st = dragState.current;
-      if (!st) return;
-      const x = Math.min(0.94, Math.max(0, (e.clientX - st.rect.left - st.dx) / st.rect.width));
-      const y = Math.min(0.88, Math.max(0, (e.clientY - st.rect.top - st.dy) / st.rect.height));
-      if (st.kind === 'note') {
-        setNotes((prev) => { const next = prev.map((n) => (n.id === st.id ? { ...n, x, y } : n)); persist(next, stickers); return next; });
-      } else {
-        setStickers((prev) => { const next = prev.map((s) => (s.id === st.id ? { ...s, x, y } : s)); persist(notes, next); return next; });
-      }
-    };
-    const onUp = () => { dragState.current = null; };
-    document.addEventListener('pointermove', onMove);
-    document.addEventListener('pointerup', onUp);
-    return () => {
-      document.removeEventListener('pointermove', onMove);
-      document.removeEventListener('pointerup', onUp);
-    };
-  }, [notes, stickers]);
+  /* --- 拖拽：空白平移 / 元素移动 --- */
+  const onPointerDown = (e, itemId) => {
+    if (e.button !== 0) return;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+    dragRef.current = itemId
+      ? { kind: 'item', id: itemId, startX: e.clientX, startY: e.clientY, originX: 0, originY: 0 }
+      : { kind: 'pan', startX: e.clientX, startY: e.clientY, originX: view.x, originY: view.y };
+  };
 
-  /* 双击空白处新增便签 */
-  const onBoardDblClick = (e) => {
-    if (e.target.closest('.canvas-note') || e.target.closest('.canvas-sticker')) return;
-    const rect = boardRef.current.getBoundingClientRect();
-    const text = window.prompt('写一张留言便签：');
+  const onPointerMove = (e) => {
+    const st = dragRef.current;
+    if (!st) return;
+    if (st.kind === 'pan') {
+      setView((v) => ({ ...v, x: st.originX + (e.clientX - st.startX), y: st.originY + (e.clientY - st.startY) }));
+      return;
+    }
+    const board = boardRef.current;
+    if (!board) return;
+    const rect = board.getBoundingClientRect();
+    const dx = (e.clientX - st.startX) / view.scale;
+    const dy = (e.clientY - st.startY) / view.scale;
+    if (!st.id || !st.originX) {
+      // 记录起点对应的元素原坐标
+      const it = items.find((i) => i.id === st.id);
+      if (!it) return;
+      st.originX = it.x;
+      st.originY = it.y;
+    }
+    const next = items.map((it) => (it.id === st.id ? { ...it, x: st.originX + dx, y: st.originY + dy } : it));
+    setItems(next);
+  };
+
+  const endDrag = () => {
+    if (dragRef.current?.kind === 'item') persist(items);
+    dragRef.current = null;
+  };
+
+  /* --- 留言：视口中心放一张便签 --- */
+  const addNote = () => {
+    const board = boardRef.current;
+    if (!board) return;
+    const text = window.prompt('写一条留言：');
     if (!text || !text.trim()) return;
-    const x = Math.min(0.74, Math.max(0.02, (e.clientX - rect.left) / rect.width));
-    const y = Math.min(0.8, Math.max(0.02, (e.clientY - rect.top) / rect.height));
-    const next = [...notes, {
-      id: 'n' + Date.now(), x, y,
+    const rect = board.getBoundingClientRect();
+    const cx = (rect.width / 2 - view.x) / view.scale;
+    const cy = (rect.height / 2 - view.y) / view.scale;
+    const item = {
+      id: 'n' + Date.now(), type: 'note',
+      x: cx - 95, y: cy - 40,
       color: Math.floor(Math.random() * NOTE_COLORS.length),
       text: text.trim(), who: '访客',
-    }];
-    setNotes(next);
-    persist(next, stickers);
+    };
+    persist([...items, item]);
   };
 
-  const removeNote = (id) => {
-    const next = notes.filter((n) => n.id !== id);
-    setNotes(next);
-    persist(next, stickers);
+  /* --- 贴一张：emoji 贴纸 --- */
+  const addSticker = (emoji) => {
+    const board = boardRef.current;
+    setEmojiPicker(false);
+    if (!board) return;
+    const rect = board.getBoundingClientRect();
+    const cx = (rect.width / 2 - view.x) / view.scale;
+    const cy = (rect.height / 2 - view.y) / view.scale;
+    const item = { id: 's' + Date.now(), type: 'sticker', x: cx - 28, y: cy - 28, emoji, who: '访客' };
+    persist([...items, item]);
+  };
+
+  /* --- 卡片列表点击：把元素带到视口中心 --- */
+  const focusItem = (it) => {
+    const board = boardRef.current;
+    if (!board) return;
+    const rect = board.getBoundingClientRect();
+    setView((v) => ({ ...v, x: rect.width / 2 - it.x * v.scale - 60, y: rect.height / 2 - it.y * v.scale - 30 }));
+  };
+
+  const fitView = () => setView({ x: 0, y: 0, scale: 1 });
+
+  const removeItem = (id) => persist(items.filter((it) => it.id !== id));
+
+  const worldStyle = {
+    transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})`,
+    transformOrigin: '0 0',
+  };
+  const dotBg = {
+    backgroundImage: `radial-gradient(#d8d3c4 1px, transparent 1px)`,
+    backgroundSize: `${24 * view.scale}px ${24 * view.scale}px`,
+    backgroundPosition: `${view.x}px ${view.y}px`,
   };
 
   return (
     <main className="tab-page" id="page-system">
-      <div className="system-page">
-        <div className="section-label">system/</div>
-        <h2 className="section-heading">共享画布</h2>
-        <p style={{ fontFamily: "'Noto Sans SC', sans-serif", fontSize: 14, color: '#8a8578', margin: '12px 0 28px' }}>
-          一块随手涂写的白板：双击空白处留言，拖动便签和贴纸布置你喜欢的样子。内容保存在你的浏览器本地。
-        </p>
-        <div className="canvas-board" ref={boardRef} onDoubleClick={onBoardDblClick}>
-          {notes.map((n) => (
-            <div
-              key={n.id}
-              className="canvas-note"
-              style={{ left: n.x * 100 + '%', top: n.y * 100 + '%', background: NOTE_COLORS[n.color % NOTE_COLORS.length] }}
-              onPointerDown={(e) => startDrag(e, n.id, 'note')}
-            >
-              <button className="canvas-note-del" title="删除便签" onClick={(e) => { e.stopPropagation(); removeNote(n.id); }}>×</button>
-              <div className="canvas-note-text">{n.text}</div>
-              <div className="canvas-note-meta">—— {n.who}</div>
+      <div className="system-page system-page-full">
+        {/* 顶栏工具条 */}
+        <div className="canvas-toolbar">
+          <span className="canvas-badge">🟡 共享白板</span>
+          <div className="canvas-actions">
+            <button className="canvas-btn canvas-btn-primary" onClick={addNote}>✍️ 留言</button>
+            <div className="canvas-btn-group">
+              <button className="canvas-btn" onClick={() => setEmojiPicker((v) => !v)}>+ 贴一张</button>
+              {emojiPicker && (
+                <div className="canvas-emoji-pop">
+                  {STICKER_EMOJIS.map((e) => (
+                    <button key={e} className="canvas-emoji" onClick={() => addSticker(e)}>{e}</button>
+                  ))}
+                </div>
+              )}
             </div>
-          ))}
-          {stickers.map((s) => (
-            <div
-              key={s.id}
-              className="canvas-sticker"
-              style={{ left: s.x * 100 + '%', top: s.y * 100 + '%', width: s.size, height: s.size, fontSize: s.emoji ? s.size * 0.7 : undefined, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              title={s.label}
-              onPointerDown={(e) => startDrag(e, s.id, 'sticker')}
-            >
-              {s.emoji ? <span>{s.emoji}</span> : <img src={s.src} alt={s.label} draggable="false" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 14 }} />}
+          </div>
+          <div className="canvas-zoom">
+            <span className="canvas-zoom-label">{Math.round(view.scale * 100)}%</span>
+            <button className="canvas-btn" onClick={() => setView((v) => ({ ...v, scale: Math.max(MIN_SCALE, v.scale / 1.2) }))}>−</button>
+            <button className="canvas-btn" onClick={() => setView((v) => ({ ...v, scale: Math.min(MAX_SCALE, v.scale * 1.2) }))}>+</button>
+            <button className="canvas-btn" title="适应视图" onClick={fitView}>⊞</button>
+          </div>
+        </div>
+
+        <div className="canvas-layout">
+          {/* 左侧卡片列表 */}
+          {panelOpen && (
+            <aside className="canvas-panel">
+              <div className="canvas-panel-title">✦ 卡片列表</div>
+              <div className="canvas-panel-list">
+                {items.length === 0 && <div className="canvas-panel-empty">还没有卡片，去画布上创建吧</div>}
+                {items.map((it) => (
+                  <button key={it.id} className="canvas-panel-item" onClick={() => focusItem(it)}>
+                    <span className="canvas-panel-dot" style={{ background: it.type === 'note' ? NOTE_COLORS[(it.color ?? 0) % NOTE_COLORS.length] : 'transparent' }}>
+                      {it.type === 'sticker' ? it.emoji : ''}
+                    </span>
+                    <span className="canvas-panel-text">{it.type === 'note' ? (it.text || '').slice(0, 18) : (it.emoji || '') + ' 贴纸'}</span>
+                    <span className="canvas-panel-who">{it.who === '站长' ? 'Kael' : it.who}</span>
+                  </button>
+                ))}
+              </div>
+              <button className="canvas-panel-toggle" onClick={() => setPanelOpen(false)}>收起列表 ‹</button>
+            </aside>
+          )}
+          {!panelOpen && (
+            <button className="canvas-panel-toggle canvas-panel-toggle-closed" onClick={() => setPanelOpen(true)}>› 卡片列表</button>
+          )}
+
+          {/* 无限画布 */}
+          <div
+            className="canvas-board"
+            ref={boardRef}
+            onWheel={onWheel}
+            onPointerDown={(e) => onPointerDown(e)}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerLeave={endDrag}
+            style={dotBg}
+          >
+            <div className="canvas-hint">Scroll 缩放 · Drag 移动画布 · 双击留言</div>
+            <div className="canvas-world" style={worldStyle}>
+              {items.map((it) =>
+                it.type === 'note' ? (
+                  <div
+                    key={it.id}
+                    className="canvas-note"
+                    style={{ left: it.x, top: it.y, background: NOTE_COLORS[(it.color ?? 0) % NOTE_COLORS.length] }}
+                    onPointerDown={(e) => { e.stopPropagation(); onPointerDown(e, it.id); }}
+                    onDoubleClick={(e) => { e.stopPropagation(); removeItem(it.id); }}
+                    title="拖动移动 · 双击删除"
+                  >
+                    <div className="canvas-note-text">{it.text}</div>
+                    <div className="canvas-note-meta">—— {it.who}</div>
+                  </div>
+                ) : (
+                  <div
+                    key={it.id}
+                    className="canvas-sticker"
+                    style={{ left: it.x, top: it.y }}
+                    title="拖动移动 · 双击删除"
+                    onPointerDown={(e) => { e.stopPropagation(); onPointerDown(e, it.id); }}
+                    onDoubleClick={(e) => { e.stopPropagation(); removeItem(it.id); }}
+                  >
+                    {it.img ? <img src={it.img} alt="贴纸" draggable={false} /> : <span>{it.emoji}</span>}
+                  </div>
+                )
+              )}
             </div>
-          ))}
-          <div className="canvas-hint">双击空白处写留言 · 拖动便签与贴纸 · 数据仅保存在本地浏览器</div>
+          </div>
         </div>
       </div>
     </main>

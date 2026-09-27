@@ -44,7 +44,7 @@ export const siteConfig = {
 
   /* ---------- 桌面贴纸（可拖拽的那个小头像） ----------
    * 把 public/avatar.svg 换成你的头像 / IP 形象即可 */
-  sticker: { src: 'avatar.png', alt: '汤勇的头像贴纸' },
+  sticker: { src: 'sticker.png', alt: '汤勇的沙发小人贴纸' },
 
   /* ---------- 首屏语义化导航（对 SEO 和无障碍友好，可选） ---------- */
   navLinks: [
