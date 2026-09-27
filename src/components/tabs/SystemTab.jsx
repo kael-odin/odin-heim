@@ -10,7 +10,7 @@ export default function SystemTab() {
   return (
     <main className="tab-page" id="page-system">
       <div className="canvas-page">
-        <iframe ref={frameRef} data-src="/whiteboard.html" id="canvasFrame" title="Kael's Whiteboard"></iframe>
+        <iframe ref={frameRef} data-src={`${import.meta.env.BASE_URL}whiteboard.html`} id="canvasFrame" title="Kael's Whiteboard"></iframe>
         <div className="canvas-hint">Scroll 缩放 · Drag 移动画布</div>
       </div>
     </main>
