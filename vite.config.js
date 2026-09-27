@@ -8,6 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(process.cwd(), 'index.html'),
+        whiteboard: resolve(process.cwd(), 'whiteboard.html'),
       },
     },
   },
