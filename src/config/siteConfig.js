@@ -104,7 +104,7 @@ export const siteConfig = {
    *  双击里面的文件图标会在新窗口中打开对应链接
    * ============================================================ */
   projects: [
-    { label: '学术 Skill 每日榜 · 85★', href: 'https://github.com/kael-odin/awesome-academic-research-skills' },
+    { label: '学术 Skill 每日榜 · 110+★', href: 'https://github.com/kael-odin/awesome-academic-research-skills' },
     { label: '提示词中文镜像 · 2205 条', href: 'https://kael-odin.github.io/prompts-chat-zh/' },
     { label: 'Amadeus-Agent · 单文件工作台', href: 'https://github.com/kael-odin/Amadeus-Agent' },
     { label: 'openworker 中文汉化 · 27★', href: 'https://github.com/kael-odin/openworker' },
@@ -161,7 +161,7 @@ export const siteConfig = {
       title: '开源',
       description: '业余持续输出：把踩坑过程沉淀成模板、镜像站与自动化榜单。',
       links: [
-        ['📊', 'https://github.com/kael-odin/awesome-academic-research-skills', '学术 Skill 每日榜 · 85★'],
+        ['📊', 'https://github.com/kael-odin/awesome-academic-research-skills', '学术 Skill 每日榜 · 110+★'],
         ['🔤', 'https://kael-odin.github.io/prompts-chat-zh/', '提示词中文镜像 · 2205 条'],
         ['→', 'https://github.com/kael-odin?tab=repositories', '更多仓库'],
       ],
