@@ -46,7 +46,7 @@ export const seedCards = [
     data: {
       avatarImg: 'avatar.png',
       name: '汤勇 Kael Odin',
-      sub: 'AI 应用工程师 / 测试工程师',
+      sub: 'AI 应用 / 全栈工程师 · 质量工程',
       slogan: '欢迎来到我的共享白板',
       belief: '先跑通，再讲清楚。',
       links: [

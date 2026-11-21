@@ -14,19 +14,19 @@ export const siteConfig = {
   name: '汤勇', // 终端 whoami 的输出，也是网站标题
   nameEn: 'Kael Odin', // 英文名 / 拼音（用于 subtitle、页脚等）
   slogan: '1 person + AI = 1 team', // 终端里金色高亮的口号
-  role: 'AI 应用工程师 / 测试工程师 / 开源爱好者', // 一行身份标签
-  description: '汤勇（Kael Odin）的个人主页——AI 应用工程师 / 测试工程师：大模型私有化部署、企业知识库、自动化测试与开源工具。', // SEO 描述
+  role: 'AI 应用 / 全栈工程师 · 质量工程 · 开源', // 一行身份标签
+  description: '汤勇（Kael Odin）的个人主页——AI 应用 / 全栈工程师：本地大模型推理、Agent 工具链、全栈产品与自动化质量体系。', // SEO 描述
 
   /* ---------- 终端开场白（whoami 之后的自我介绍） ----------
    * 每行一条，会逐行打字机式输出。建议 2~4 行。 */
   bioLines: [
-    '测试工程师：守护三条代理/数据采集产品线的质量',
-    'AI 落地：llama.cpp 私有化部署 / FastGPT 知识库',
-    '业余：把想法做成开源工具与自动化流水线',
+    '质量工程：三条代理/数据采集产品线的质量体系',
+    '大模型：llama.cpp 源码移植，单卡 22G 跑 262K 上下文',
+    '全栈与开源：225★ 榜单、163★ 官方指南、43★ 插件市场',
   ],
 
   /* ---------- 顶部导航副标题（作品集页） ---------- */
-  navSubtitle: '汤勇 Kael Odin · AI 应用工程师 / 测试工程师 · 江苏徐州',
+  navSubtitle: '汤勇 Kael Odin · AI 应用 / 全栈工程师 · 江苏徐州',
 
   /* ---------- 联系方式 ---------- */
   email: 'sczxtangyong@163.com',
@@ -94,8 +94,8 @@ export const siteConfig = {
     sub: '期待与你连接',
     services: [
       // 两张服务/合作卡片，不需要就删掉
-      { icon: '🤖', title: 'AI 落地', desc: 'llama.cpp 私有化部署 / FastGPT 知识库<br />模型与 Agent 工具选型评测' },
-      { icon: '🧪', title: '测试工程', desc: '接口测试 / 抓包分析<br />Playwright Web UI 自动化' },
+      { icon: '🤖', title: 'AI 工程', desc: 'llama.cpp / KVMem 源码移植与调优<br />FastGPT 知识库 · MCP 与 Agent Skill' },
+      { icon: '🧪', title: '质量工程', desc: '接口 / 数据 / 安全测试<br />每日自动巡检 · DAST 扫描' },
     ],
   },
 
@@ -104,10 +104,11 @@ export const siteConfig = {
    *  双击里面的文件图标会在新窗口中打开对应链接
    * ============================================================ */
   projects: [
-    { label: '学术 Skill 每日榜 · 110+★', href: 'https://github.com/kael-odin/awesome-academic-research-skills' },
+    { label: 'Amazon 采集反爬指南 · 163★', href: 'https://github.com/Thordata/how-to-bypass-amazon-captcha-when-scraping' },
+    { label: '学术 Skill 每日榜 · 225★', href: 'https://github.com/kael-odin/awesome-academic-research-skills' },
+    { label: '插件中文市场 · 43★', href: 'https://github.com/kael-odin/codex-plugins-zh' },
+    { label: '2080 Ti · 262K 长上下文 · 10★', href: 'https://github.com/kael-odin/2080ti-22G-kvmem-qwen3.8-27B-256K-36.6toks' },
     { label: '提示词中文镜像 · 2205 条', href: 'https://kael-odin.github.io/prompts-chat-zh/' },
-    { label: 'Amadeus-Agent · 单文件工作台', href: 'https://github.com/kael-odin/Amadeus-Agent' },
-    { label: 'openworker 中文汉化 · 27★', href: 'https://github.com/kael-odin/openworker' },
   ],
 
   /* ============================================================
@@ -117,10 +118,10 @@ export const siteConfig = {
     name: '小助手',
     link: 'https://github.com/kael-odin', // “正在接入中”的跳转链接
     dialog: [
-      { role: 'user', text: '嗨，跟来看主页的朋友打个招呼吧' },
-      { role: 'bot', text: '嘿，我是站长的小助手（占位演示）。<br /><br />把这里换成你和你的 AI 助手的真实对话，或者删掉这个图标。' },
-      { role: 'user', text: '好的，就展示到这吧 😄' },
-      { role: 'bot', text: '随时来聊。' },
+      { role: 'user', text: '嗨，简单介绍一下站长' },
+      { role: 'bot', text: '汤勇（Kael Odin），AI 应用 / 全栈工程师。<br />白天负责三条代理/数据采集产品线的质量体系，业余做本地大模型与开源工具。' },
+      { role: 'user', text: '他最近在做什么？' },
+      { role: 'bot', text: '把 27B 模型跑在单张 2080 Ti 上（262K 上下文、36.6 tok/s），维护 225★ 的科研 Skill 榜单，也在做全栈产品。' },
     ],
   },
 
@@ -162,7 +163,8 @@ export const siteConfig = {
       title: '开源',
       description: '业余持续输出：把踩坑过程沉淀成模板、镜像站与自动化榜单。',
       links: [
-        ['📊', 'https://github.com/kael-odin/awesome-academic-research-skills', '学术 Skill 每日榜 · 110+★'],
+        ['📊', 'https://github.com/kael-odin/awesome-academic-research-skills', '学术 Skill 每日榜 · 225★'],
+        ['🕷️', 'https://github.com/Thordata/how-to-bypass-amazon-captcha-when-scraping', 'Amazon 采集反爬指南 · 163★'],
         ['🔤', 'https://kael-odin.github.io/prompts-chat-zh/', '提示词中文镜像 · 2205 条'],
         ['→', 'https://github.com/kael-odin?tab=repositories', '更多仓库'],
       ],
